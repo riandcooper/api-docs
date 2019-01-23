@@ -1198,6 +1198,77 @@
             }
           }
         },
+        "/fleet/drivers/{driver_id}/hos_daily_log": {
+            "patch": {
+              "consumes": [
+                "application/json"
+              ],
+              "description": "Modify details, such as trailer number or shipping ID, for a driver's daily log",
+              "operationId": "edit_fleet_drivers_hos_daily_log_details",
+              "parameters": [
+                {
+                  "$ref": "#/parameters/accessTokenParam"
+                },
+                {
+                  "description": "ID (integer) of the driver with HOS logs.",
+                  "in": "path",
+                  "name": "driver_id",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "in": "body",
+                  "name": "editHosDailyLogParams",
+                  "required": true,
+                  "schema": {
+                    "properties": {
+                      "timestamp": {
+                        "description": "A specified timestamp within the bounds of a driver's daily log, specified in milliseconds UNIX time.",
+                        "example": 1462881998034,
+                        "type": "integer"
+                      },
+                      "shippingId": {
+                        "description": "Shipping Id to add to driver's daily log.",
+                        "example": 101,
+                        "format": "int64",
+                        "type": "integer"
+                      },
+                      "trailerName": {
+                        "description": "Trailer name to add to driver's daily log",
+                        "example": "80111",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "timestamp"
+                    ],
+                    "type": "object"
+                  }
+                }
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "Returns the edited details of the daily log.",
+                  "schema": {
+                    "$ref": "#/definitions/HosDailyLogDetailsResponse"
+                  }
+                },
+                "default": {
+                  "description": "Unexpected error.",
+                  "schema": {
+                    "$ref": "#/definitions/ErrorResponse"
+                  }
+                }
+              },
+              "summary": "/fleet/drivers/{driver_id}/hos_daily_log",
+              "tags": [
+                "Fleet"
+              ]
+            }
+        },
         "/fleet/hos_logs": {
             "post": {
                 "tags": [
@@ -4593,6 +4664,27 @@
               }
             }
           }
+        },
+        "HosDailyLogDetailsResponse": {
+            "type": "object",
+            "properties": {
+                "dayStartMs": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Unix epoch time (in ms) of time fo when this daily log starts",
+                    "example": 1462881998034
+                },
+                "shippingId": {
+                    "type": "string",
+                    "description": "Shipping Id, potentially multiple Ids delimited by a comma or space",
+                    "example": "1059984"
+                },
+                "trailerNumber": {
+                    "type": "string",
+                    "description": "Trailer Number, potentially multiple numbers delimited by a comma or space",
+                    "example": "80801"
+                }
+            }
         },
         "HosLogsSummaryResponse": {
           "type": "object",
